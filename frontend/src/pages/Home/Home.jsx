@@ -11,22 +11,21 @@ const Home = () => {
   }
   const history = useNavigate();
   function startRegister(){
-    history('./register')
+    history('./authenticate')
   } 
   return (
     <div className={style.cardWrapper}>
         <Card title="Welcome to the CodersVilla!" icon="logo">
-        <p className={style.text}>We’re are working hard to get Code Karo ready for everyone! 
-          While we wrap the finishing touches. 
-          We’re adding people gradually so nothing breaks. 
-        </p>
-        <div>
-          <Button onClick={startRegister} text='Get your username'/>
-        </div>
-        <div className={style.signin}>
-          <span>Have an invite? </span>
-          <Link style={SigninStyle} to='/login'>Sign in</Link>
-        </div>
+            <p className={style.text}>We’re are working hard to get Code Karo ready for everyone! 
+            While we wrap the finishing touches. 
+            We’re adding people gradually so nothing breaks. 
+            </p>
+            <div>
+                <Button onClick={startRegister} text="Let's Go"/>
+            </div>
+            <div className={style.signin}>
+                <span>Have an invite? </span>
+            </div>
         </Card>
         
     </div>
