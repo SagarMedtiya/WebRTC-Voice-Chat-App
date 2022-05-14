@@ -5,8 +5,10 @@
     background-color: #1F7A8C;
     padding: 30px;
     border-radius: 20px;
-    text-align: center;
-
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 .headingWrapper{
     display: flex;
