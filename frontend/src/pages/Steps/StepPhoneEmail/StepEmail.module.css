@@ -33,3 +33,12 @@
     background: #E1E5F2;
     fill: #1F7A8C;
 }
+.actionButtonWrap{
+    margin-top:40px;
+}
+.para{
+    color: #FFF;
+    width:70%;
+    margin :auto;
+    margin-top: 20px;
+}
