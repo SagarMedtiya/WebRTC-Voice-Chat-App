@@ -1,14 +1,29 @@
-const crypto = require('crypto')
+const crypto = require('crypto');
+const hashed = require('./hash')
 
-const { sendOtp } = require("../controllers/auth-controller")
-
-class otpService(){
-    generateOtp(){
-        const otp = crypto 
+const ssmSID = process.env.SMS_SID;
+const smsAuth = process.env.AUTH_TOKEN;
+const twilio = require('twilio')(ssmSID,smsAuth, {
+    lazyLoading: true
+});
+class otpService{
+    async generateOtp(){
+        const otp = crypto.randomInt(10000,99999);
+        return otp;
     }
-    sendBysms(){}
-    verifyOtp(){}
+    async sendBysms(phone, otp){
+        return await twilio.messages.create({
+            to: phone,
+            from : process.env.SMS_FROM_NUMBER,
+            body: `Your CodersVillaOTP is:${otp}`
+        }) 
+    }   
+    verifyOtp(hashedOtp, data){
+        let computedHash = hashed.hashOtp(data);
+        return (computedHash === hashedOtp) ? true : false;
+
+    }
 }
 
 
-module.exports = new otpService
+module.exports = new otpService()
