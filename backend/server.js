@@ -4,6 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const router = require('./routes');
 
+app.use(express.json());
 app.use(router);
 app.get('/',(req,res)=>{
     res.send('hello from express');
