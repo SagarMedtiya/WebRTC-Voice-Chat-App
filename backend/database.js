@@ -10,3 +10,5 @@ function Dbconnect(){
             console.log('Something went wrong', error)
         });
 }
+
+module.exports = Dbconnect
