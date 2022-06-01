@@ -20,7 +20,7 @@ class otpService{
     }   
     verifyOtp(hashedOtp, data){
         let computedHash = hashed.hashOtp(data);
-        return (computedHash === hashedOtp) ? true : false;
+        return (computedHash === hashedOtp) ;
 
     }
 }
