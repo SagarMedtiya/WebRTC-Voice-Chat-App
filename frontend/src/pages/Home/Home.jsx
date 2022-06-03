@@ -13,7 +13,7 @@ const Home = () => {
   function startRegister(){
     history('./authenticate')
   } 
-  return (
+  return ( 
     <div className={style.cardWrapper}>
         <Card title="Welcome to the CodersVilla!" icon="logo">
             <p className={style.text}>We’re are working hard to get Code Karo ready for everyone! 
