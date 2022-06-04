@@ -6,7 +6,7 @@
         type: String,
         required: true
      },
-     avtivated: {
+     activated: {
         type: Boolean,
         required: false,
         default: false
