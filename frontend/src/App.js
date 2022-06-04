@@ -5,10 +5,11 @@ import Navigation from './components/shared/Navi/Navigation';
 import Activate from './pages/Activate/Activate';
 import Authenticate from './pages/Authenticate/Authenticate';
 import Rooms from './pages/Rooms/Rooms';
-const isAuth = false;
-const user ={
-    activated: true,
-};
+import { useSelector } from 'react-redux'
+// const isAuth = false;
+// const user ={
+//     activated: true,
+// };
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
 };
 
 const GuestRoute = ({children})=>{
+    const {isAuth} = useSelector((state)=> state.auth)
     const location = useLocation();
     if (isAuth) {
         return <Navigate to="/rooms" state={{ from: location }} />
@@ -47,6 +49,7 @@ const GuestRoute = ({children})=>{
 };
 
 const SemiProtectedRoute = ({children})=>{
+    const {user,isAuth} = useSelector((state)=> state.auth)
     const location = useLocation();
     if (!isAuth) {
         return <Navigate to="/" state={{ from: location }} />;
@@ -58,6 +61,7 @@ const SemiProtectedRoute = ({children})=>{
 };
 
 const ProtectedRoute = ({children})=>{
+    const {user,isAuth} = useSelector((state)=> state.auth)
     const location = useLocation();
     if (!isAuth) {
         return <Navigate to="/" state={{ from: location }} />;
