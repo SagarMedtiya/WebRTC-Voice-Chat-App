@@ -7,8 +7,6 @@ const initialState = {
         phone: '',
         hash :'',
     }
-
-
 }
 
 export const authSlice = createSlice({
