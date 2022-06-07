@@ -47,11 +47,26 @@
     margin-top: 3.9rem;
 }
 .avatarWrapper{
-    width: 110px;
+    width: 120px;
+    height:120px;
     border: 6px solid #022B3A;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+.avatarImage{
+    height: 95%;
+    width: 95%;
+    object-fit: cover;
+    clip-path: circle();
+}
+.avatarInput{
+    display: none;
+}
+.avatarLabel{
+    cursor: pointer;
+    margin: 10px 0;
+    display: inline-block;
 }
