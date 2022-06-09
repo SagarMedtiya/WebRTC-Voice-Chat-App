@@ -21,7 +21,7 @@ class TokenService{
         }
     }
     async verifyAccessToken(token){
-        return jwt.verify(token, JWT_ACCESS_TOKEN_SECRET)
+        return jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET);
     }
 
 }
