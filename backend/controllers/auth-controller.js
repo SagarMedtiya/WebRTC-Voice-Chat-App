@@ -48,7 +48,7 @@ class Authcontroller{
 
         let user;
         try{
-            await userService.findUser({phone});
+            user = await userService.findUser({phone});
             if(!user){
                 user = await userService.createUser({phone})
             }
