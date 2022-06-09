@@ -14,6 +14,7 @@ const corsOption ={
     credentials:true,
 }
 app.use(cors(corsOption));
+app.use('/storage',express.static('storage'))
 app.use(express.json({limit: '8mb'}));
 app.use(router);
 app.get('/',(req,res)=>{
