@@ -74,6 +74,11 @@ class Authcontroller{
         res.json({  user: userDto, auth: true});
 
     }
+    async refresh(req,res){
+        //get refresh token from cookie
+        //check if token is valid
+        
+    }
 }
 
 module.exports = new  Authcontroller();
