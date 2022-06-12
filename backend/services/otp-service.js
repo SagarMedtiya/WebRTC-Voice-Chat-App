@@ -18,7 +18,7 @@ class otpService{
             body: `Your CodersVillaOTP is:${otp}`
         }) 
     }   
-    verifyOtp(hashedOtp, data){
+    async verifyOtp(hashedOtp, data){
         let computedHash = hashed.hashOtp(data);
         return (computedHash === hashedOtp) ;
 
