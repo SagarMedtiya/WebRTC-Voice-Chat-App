@@ -1,4 +1,5 @@
 import './App.css';
+
 import {  BrowserRouter, Routes, Route,Navigate, useLocation} from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Navigation from './components/shared/Navi/Navigation';
@@ -12,7 +13,10 @@ import { useSelector } from 'react-redux'
 // };
 
 function App() {
-    return (
+    
+    //call refresh endpoint
+
+    return loading ? ('Loading...'): (
         <BrowserRouter>
             <Navigation/>
             <Routes>
