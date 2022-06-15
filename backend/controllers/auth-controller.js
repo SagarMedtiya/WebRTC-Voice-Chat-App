@@ -82,7 +82,7 @@ class Authcontroller{
         try{
             userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie)
         }catch(err){
-            return res.status(401).send({message : "Invalid Token"})
+            return res.status(401).json({message : "Invalid Token"})
         }
         //check if the token is in database
         try{
