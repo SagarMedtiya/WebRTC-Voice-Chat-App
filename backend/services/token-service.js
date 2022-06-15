@@ -24,19 +24,19 @@ class TokenService{
         return jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET);
     }
     async verifyRefreshToken(token){
-        return jwt.verify(token,process.env.JWT_ACCESS_TOKEN_SECRET);
+        return jwt.verify(token,process.env.JWT_REFRESH_TOKEN_SECRET);
     }
-    async findRefreshToken(userId,token){
+    async findRefreshToken(userId,refreshToken){
         return await refreshModel.findOne({
-            _id :userId,
-            token:token
+            userId :userId,
+            token:refreshToken
         })
     }
     async updateRefreshToken(userId,token){
-        return await refreshModel.updateOne({
-            _id :userId,
-            token:token
-        })
+        return await refreshModel.updateOne(
+            { userId :userId},
+            { token:token}
+        );
     }
 }
 
