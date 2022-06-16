@@ -1,5 +1,4 @@
 import './App.css';
-
 import {  BrowserRouter, Routes, Route,Navigate, useLocation} from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Navigation from './components/shared/Navi/Navigation';
@@ -7,13 +6,14 @@ import Activate from './pages/Activate/Activate';
 import Authenticate from './pages/Authenticate/Authenticate';
 import Rooms from './pages/Rooms/Rooms';
 import { useSelector } from 'react-redux'
-// const isAuth = false;
-// const user ={
-//     activated: true,
-// };
+import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh';
+
+import Loader from './components/shared/Loader/Loader';
 
 function App() {
-    
+
+    return <Loader message='Loading, please wait...'/>
+    const {loading}=useLoadingWithRefresh();
     //call refresh endpoint
 
     return loading ? ('Loading...'): (
