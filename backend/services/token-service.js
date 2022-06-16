@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { refresh } = require('../controllers/auth-controller');
 const refreshModel = require('../models/refresh-model');
 class TokenService{
     generateTokens(payload){
@@ -37,6 +38,9 @@ class TokenService{
             { userId :userId},
             { token:token}
         );
+    }
+    async removeToken(refreshToken){
+        return await refreshModel.deleteOne({token: refreshToken})
     }
 }
 
