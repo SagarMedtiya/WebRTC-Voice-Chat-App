@@ -7,17 +7,16 @@ import Authenticate from './pages/Authenticate/Authenticate';
 import Rooms from './pages/Rooms/Rooms';
 import { useSelector } from 'react-redux'
 import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh';
-
+import { ToastContainer, toast } from 'react-toastify';
 import Loader from './components/shared/Loader/Loader';
 
 function App() {
-
-    return <Loader message='Loading, please wait...'/>
     const {loading}=useLoadingWithRefresh();
     //call refresh endpoint
 
-    return loading ? ('Loading...'): (
+    return loading ? (<Loader message='Loading, please wait...'/>): (
         <BrowserRouter>
+            <ToastContainer />
             <Navigation/>
             <Routes>
                 <Route path='/' exact element={
