@@ -1,6 +1,5 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import styles from './StepAvatar.module.css';
-import TextInput from '../../../components/shared/TextInput/TextInput';
 import Card from '../../../components/shared/Card/Card';
 import Button from '../../../components/shared/Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +15,7 @@ const StepAvatar = ({onNext}) => {
     const dispatch = useDispatch();
     const [image, setImage] = useState('/images/monkey.jpg');
     const [loading, setLoading] = useState(false);
+
     function captureImage(e){
        const file = e.target.files[0];
        const reader = new FileReader();
@@ -50,11 +50,7 @@ const StepAvatar = ({onNext}) => {
             setLoading(false);
         }
     }
-    useEffect(() => {
-        return ()=>{
-            
-        }
-    },[]);
+   
 
     if(loading) return <Loader message="Activation in progress..." />
     return (
