@@ -6,13 +6,15 @@ const router = require('./routes');
 const cors = require('cors')
 const Dbconnect = require('./database')
 const cookieParser = require('cookie-parser')
-
+const morgan = require("morgan");
 app.use(cookieParser());
 Dbconnect();
 const corsOption ={
     origin : ['http://localhost:3000'],
     credentials:true,
 }
+//log requests
+app.use(morgan('tiny'));
 app.use(cors(corsOption));
 app.use('/storage',express.static('storage'))
 app.use(express.json({limit: '8mb'}));
