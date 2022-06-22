@@ -1,6 +1,7 @@
-import React from 'react'
+import React,{useState} from 'react'
 import styles from './Rooms.module.css'
 import RoomCard from '../../components/RoomCard/RoomCard'
+import AddRoomModel from '../../components/AddRoomModel/AddRoomModel'
 const room =[
     {
         id:1,
@@ -72,7 +73,11 @@ const room =[
     }
 ]
 const Rooms = () => {
-  return <>
+    const [showModel, setShowModel] = useState(false);
+    function openModel(){
+        setShowModel(true);
+    }
+    return <>
     <div className='container'>
         <div className={styles.roomsHeader}>
             <div className={styles.left}>
@@ -83,7 +88,7 @@ const Rooms = () => {
                 </div>
             </div>
             <div className={styles.right}>
-                <button className={styles.startButton}>
+                <button onClick={openModel} className={styles.startButton}>
                     <img src="/images/home.png" alt="" />
                     <span>Start a Room</span>
                 </button>
@@ -95,6 +100,7 @@ const Rooms = () => {
             }
         </div>
     </div>
+    {showModel && <AddRoomModel/>}
   </>
 }
 
