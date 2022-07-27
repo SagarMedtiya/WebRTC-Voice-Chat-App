@@ -14,6 +14,7 @@
     max-width: 500px;
     background: #1d1d1d;
     border-radius: 20px;
+    position: relative;
 }
 .modelHeader{
     padding:30px;
@@ -31,10 +32,12 @@
     display:flex;
     flex-direction:column;
     align-items: center;
-    background: #262626;
     cursor: pointer;
     padding:10px 0;
     border-radius: 18px;
+}
+.typeBox.active{
+    background: #262626;
 }
 .heading{
     margin-bottom: 5px
@@ -68,4 +71,16 @@
 } 
 .footerButton:hover{
     background-color: #13763b;
+}
+
+.footerButton span{
+    margin-left: 5px;
+}
+
+.closeButton{
+    position: absolute;
+    right:3px;
+    top: 5px;
+    background: none;
+    color: #E1E5F2;
 }
