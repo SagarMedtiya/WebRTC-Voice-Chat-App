@@ -32,15 +32,17 @@ const Navigation = () => {
         <img  src="/images/Logo.png" alt="" />
         <span style={logoText}>CodersVilla</span>
       </Link>
-      <div className={style.navRight}>
-        <h3>{user.name}</h3>
-        <Link to='/'>
-            <img className={style.avatar} src={user.avatar}  alt="" />
-        </Link>
-        <button className={style.logoutBtn}onClick={logoutUser}>
-            <img  src="/images/logout.png" alt="" />
-        </button>
-      </div>
+      {isAuth &&(
+        <div className={style.navRight}>
+            <h3>{user?.name}</h3>
+            <Link to='/'>
+                <img className={style.avatar} src={user.avatar ? user.avatar:'/images/monkey.jpg'}  weight="40" height="40" alt="" />
+            </Link>
+            <button className={style.logoutBtn}onClick={logoutUser}>
+                <img  src="/images/logout.png" alt="" />
+            </button>
+        </div>
+      )}
         {/*isAuth && <button onClick={logoutUser}>Logout</button>*/}
     </nav>
   )
