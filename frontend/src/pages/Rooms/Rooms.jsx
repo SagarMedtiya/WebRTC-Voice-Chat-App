@@ -1,79 +1,90 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import styles from './Rooms.module.css'
 import RoomCard from '../../components/RoomCard/RoomCard'
 import AddRoomModel from '../../components/AddRoomModel/AddRoomModel'
-const room =[
-    {
-        id:1,
-        topic: 'Which framework is best for frontend?',
-        speakers: [
-            {
-            id:1,
-            name: 'John Deoe',
-            avatar: '/images/monkey.jpg'
-            },
-            {
-            id: 2,
-            name: 'Jane DOe',
-            avatar:'/images/monkey.jpg'
-            },
-        ],
-        totalPeople: 40,
-    },
-    {
-        id:2,
-        topic: 'Which framework is best for frontend?',
-        speakers: [
-            {
-            id:1,
-            name: 'John Deoe',
-            avatar: '/images/monkey.jpg'
-            },
-            {
-            id: 2,
-            name: 'Jane DOe',
-            avatar:'/images/monkey.jpg'
-            },
-        ],
-        totalPeople: 40,
-    },
-    {
-        id:3,
-        topic: 'Which framework is best for frontend?',
-        speakers: [
-            {
-            id:1,
-            name: 'John Deoe',
-            avatar: '/images/monkey.jpg'
-            },
-            {
-            id: 2,
-            name: 'Jane DOe',
-            avatar:'/images/monkey.jpg'
-            },
-        ],
-        totalPeople: 40,
-    },
-    {
-        id:4,
-        topic: 'Which framework is best for frontend?',
-        speakers: [
-            {
-            id:1,
-            name: 'John Deoe',
-            avatar: '/images/monkey.jpg'
-            },
-            {
-            id: 2,
-            name: 'Jane DOe',
-            avatar:'/images/monkey.jpg'
-            },
-        ],
-        totalPeople: 40,
-    }
-]
+import {getAllRooms} from '../../http/index'
+
+// const room =[
+//     {
+//         id:1,
+//         topic: 'Which framework is best for frontend?',
+//         speakers: [
+//             {
+//             id:1,
+//             name: 'John Deoe',
+//             avatar: '/images/monkey.jpg'
+//             },
+//             {
+//             id: 2,
+//             name: 'Jane DOe',
+//             avatar:'/images/monkey.jpg'
+//             },
+//         ],
+//         totalPeople: 40,
+//     },
+//     {
+//         id:2,
+//         topic: 'Which framework is best for frontend?',
+//         speakers: [
+//             {
+//             id:1,
+//             name: 'John Deoe',
+//             avatar: '/images/monkey.jpg'
+//             },
+//             {
+//             id: 2,
+//             name: 'Jane DOe',
+//             avatar:'/images/monkey.jpg'
+//             },
+//         ],
+//         totalPeople: 40,
+//     },
+//     {
+//         id:3,
+//         topic: 'Which framework is best for frontend?',
+//         speakers: [
+//             {
+//             id:1,
+//             name: 'John Deoe',
+//             avatar: '/images/monkey.jpg'
+//             },
+//             {
+//             id: 2,
+//             name: 'Jane DOe',
+//             avatar:'/images/monkey.jpg'
+//             },
+//         ],
+//         totalPeople: 40,
+//     },
+//     {
+//         id:4,
+//         topic: 'Which framework is best for frontend?',
+//         speakers: [
+//             {
+//             id:1,
+//             name: 'John Deoe',
+//             avatar: '/images/monkey.jpg'
+//             },
+//             {
+//             id: 2,
+//             name: 'Jane DOe',
+//             avatar:'/images/monkey.jpg'
+//             },
+//         ],
+//         totalPeople: 40,
+//     }
+// ]
+
 const Rooms = () => {
     const [showModel, setShowModel] = useState(false);
+    const [rooms, setRooms] = useState([]);
+    useEffect(() => {
+        const fetchRooms = async ()=>{
+            const {data} = await getAllRooms();
+            setRooms(data);
+        }
+        fetchRooms();
+    }, []);
     function openModel(){
         setShowModel(true);
     }
@@ -96,11 +107,11 @@ const Rooms = () => {
         </div>
         <div className={styles.roomList}>
             {
-                room.map(room => <RoomCard key={room.id} room={room}/>)
+                rooms.map(room => <RoomCard key={room.id} room={room}/>)
             }
         </div>
     </div>
-    {showModel && <AddRoomModel onClose={()=>setShowModel(false)}/>}
+    {showModel && <AddRoomModel onClose={()=>setShowModel(false)}/>}  
   </>
 }
 
