@@ -5,6 +5,7 @@ import Navigation from './components/shared/Navi/Navigation';
 import Activate from './pages/Activate/Activate';
 import Authenticate from './pages/Authenticate/Authenticate';
 import Rooms from './pages/Rooms/Rooms';
+import Room from './pages/Room/Room'
 import { useSelector } from 'react-redux'
 import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh';
 import { ToastContainer, toast } from 'react-toastify';
@@ -35,6 +36,11 @@ function App() {
                 <Route path="rooms" element={
                     <ProtectedRoute>
                         <Rooms/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/room/:id" element={
+                    <ProtectedRoute>
+                        <Room/>
                     </ProtectedRoute>
                 }/>
             </Routes>
