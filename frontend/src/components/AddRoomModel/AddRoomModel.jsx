@@ -2,15 +2,17 @@ import React,{useState} from 'react'
 import styles from './AddRoomModel.module.css'
 import TextInput from '../shared/TextInput/TextInput'
 import {createRoom as create} from '../../http/index'
-
+import {useNavigate} from 'react-router-dom';
 const AddRoomModel = ({onClose}) => {
     const [roomType, setRoomType] =useState('open');
     const [topic, setTopic] = useState('')
+    const history = useNavigate()
+
     async function createRoom (){
         try{
             if(!topic) return ;
             const {data} = await create({topic, roomType});
-            console.log(data);
+            history(`/room/${data.id}`)
         }catch(err){
             console.log(err.message)
         }
