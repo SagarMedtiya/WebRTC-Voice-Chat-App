@@ -12,7 +12,10 @@
      },
      avatar: {
         type: String,
-        required: false
+        required: false,
+        get:(avatar)=>{
+            return `${process.env.BASE_URL}`
+        }
      },
      activated: {
         type: Boolean,
