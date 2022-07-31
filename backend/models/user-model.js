@@ -14,7 +14,11 @@
         type: String,
         required: false,
         get:(avatar)=>{
-            return `${process.env.BASE_URL}`
+            if(avatar){
+                return `${process.env.BASE_URL}${avatar}`
+            }
+            
+            return avatar;
         }
      },
      activated: {
@@ -23,7 +27,8 @@
         default: false
      }
  },{
-    timestamps: true     
+    timestamps: true,
+    toJSON:{ getters: true}
  })
 
 
