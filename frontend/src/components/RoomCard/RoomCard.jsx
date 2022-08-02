@@ -1,10 +1,13 @@
 import React from 'react'
-import styles from './RoomCard.module.css'
+import styles from './RoomCard.module.css';
+import {useNavigate} from 'react-router-dom';
+
 const RoomCard = ({room}) => {
+    const history = useNavigate()
   return (
-    <div className={styles.card}>
+    <div onClick={()=>{history(`/room/${room.id}`)}}className={styles.card}>
         <h3 className={styles.topic}>{room.topic}</h3>
-        <div className={styles.speaker}>
+        <div className={`${styles.speaker} ${room.speakers.length ===1 ? styles.singleSpeaker: ""}`}>
             <div className={styles.left}>
                 {room.speakers.map(speaker=>(
                     <img key={speaker.id} src={speaker.avatar} alt="" />
