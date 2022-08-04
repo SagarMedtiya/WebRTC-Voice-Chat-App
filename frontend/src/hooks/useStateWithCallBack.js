@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useEffect } from 'react'
 export const useStateWithCallBack=(initialState)=>{
     const [state, setState] = useState(initialState)
     const cbRef  = useRef();
@@ -8,6 +8,13 @@ export const useStateWithCallBack=(initialState)=>{
         setState((prev)=>{
             return typeof newState==='function' ?newState(prev) :newState
         })
-    },[state, updateState]) //dependency array
-            
+    },[]) //dependency array
+    useEffect(() => {
+        if(cbRef.current){
+            cbRef.current(state);
+            cbRef.current = null;
+        }
+    }, [state]);
+
+    return [state,updateState];
 }
