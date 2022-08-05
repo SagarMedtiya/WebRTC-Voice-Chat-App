@@ -10,9 +10,9 @@ const Room = () => {
     <div>
         <div>All connected speakers</div>
         {
-            clients.map(client=>{
+            clients.map((client,index)=>{
                 return (
-                <div key={client.id}>
+                <div key={index}>
                     <audio ref={(instance)=>provideRef(instance,client.id)}controls autoPlay></audio>
                     {
                         client.name
