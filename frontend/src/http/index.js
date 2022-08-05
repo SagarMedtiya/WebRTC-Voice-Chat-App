@@ -25,7 +25,7 @@ api.interceptors.response.use(
     },
     async (error)=>{
         const originalRequest = error.config;
-        if(error.response.status === 401 && error.config && !error.config._isRetry){
+        if(error.response.status === 401 && originalRequest && !originalRequest._isRetry){
             originalRequest.isRetry =true;
             try{
                 await axios.get('http://localhost:4000/api/refresh',
