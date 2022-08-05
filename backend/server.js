@@ -7,6 +7,13 @@ const cors = require('cors')
 const Dbconnect = require('./database')
 const cookieParser = require('cookie-parser')
 const morgan = require("morgan");
+const server = require('http').createServer(app);
+const io = require('socket.io')(server,{
+    cors: {
+        origin:'http://localhost:3000',
+        methods:['GET','POST']
+    }
+})
 app.use(cookieParser());
 Dbconnect();
 const corsOption ={
@@ -22,5 +29,8 @@ app.use(router);
 app.get('/',(req,res)=>{
     res.send('hello from express');
 })
-
-app.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
+//socket
+io.on('Connection',(socket) =>{
+    console.log('new Connection', socket.id);
+}) 
+server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
