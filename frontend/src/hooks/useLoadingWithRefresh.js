@@ -8,10 +8,10 @@ export function useLoadingWithRefresh (){
     useEffect(() => {
        (async()=>{
             try{
-                const {data}=await axios.get('http://localhost:4000/api/refresh',{
-                withCredentials: true
-                }
-                );
+                const {data}=await axios.get('http://localhost:4000/api/refresh',
+                {
+                    withCredentials: true
+                });
                 dispatch(setAuth(data));
                 console.log(data);
                 setLoading(false);
