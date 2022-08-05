@@ -30,7 +30,7 @@ app.get('/',(req,res)=>{
     res.send('hello from express');
 })
 //socket
-io.on('Connection',(socket) =>{
+io.on('connection',(socket) =>{
     console.log('new Connection', socket.id);
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
