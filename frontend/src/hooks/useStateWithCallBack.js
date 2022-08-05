@@ -2,7 +2,7 @@ import {useState} from 'react'
 import { useCallback, useRef, useEffect } from 'react'
 export const useStateWithCallBack=(initialState)=>{
     const [state, setState] = useState(initialState)
-    const cbRef  = useRef();
+    const cbRef  = useRef(null);
     const updateState = useCallback((newState,cb)=>{
         cbRef.current = cb;
         setState((prev)=>{
