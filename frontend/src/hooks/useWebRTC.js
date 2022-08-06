@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import {useRef} from 'react'
 import { useStateWithCallBack } from './useStateWithCallBack';
 import {socketInit} from '../socket/index'
+import { ACTIONS } from '../action';
 
 export const useWebRTC=(roomId, user)=>{
     const [clients, setClients] = useStateWithCallBack([]);
@@ -40,7 +41,7 @@ export const useWebRTC=(roomId, user)=>{
                     localElement.srcObject = localMediaStream.current;
                 }
                 //socket emit JSON socket io
-                socket.current.emit('join',{});
+                socket.current.emit(ACTIONS,{});
                 
             })
         })
