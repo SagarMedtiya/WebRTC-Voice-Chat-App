@@ -7,6 +7,7 @@ const cors = require('cors')
 const Dbconnect = require('./database')
 const cookieParser = require('cookie-parser')
 const morgan = require("morgan");
+const ACTIONS = require('./action');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server,{
     cors: {
@@ -32,5 +33,6 @@ app.get('/',(req,res)=>{
 //socket
 io.on('connection',(socket) =>{
     console.log('new Connection', socket.id);
+    socket.on(ACTIONS)
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
