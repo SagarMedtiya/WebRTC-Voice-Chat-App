@@ -7,7 +7,7 @@ const cors = require('cors')
 const Dbconnect = require('./database')
 const cookieParser = require('cookie-parser')
 const morgan = require("morgan");
-const ACTIONS = require('./action');
+const ACTIONS = require('./action')
 const server = require('http').createServer(app);
 const io = require('socket.io')(server,{
     cors: {
@@ -37,11 +37,22 @@ const socketUserMapping ={
 
 io.on('connection',(socket) =>{
     console.log('new Connection', socket.id);
+    
     socket.on(ACTIONS.JOIN,({roomId, user})=>{
-        socketUserMapping[socket.id] = user
+        
+        socketUserMapping[socket.id] = user;
+        //new Map
+        const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
+        clients.forEach(clientId=>{
+            io.to(clientId).emit(ACTIONS.ADD_PEER,{
+
+            })
+        })
+        socket.emit(ACTIONS.ADD_PEER)
+        console.log(clients)
+        
     })
     //new Map
-    const clients = io.sockets.adapter.rooms.get(roomId) || [];
     
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
