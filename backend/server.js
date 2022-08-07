@@ -44,12 +44,10 @@ io.on('connection',(socket) =>{
         //new Map
         const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
         clients.forEach(clientId=>{
-            io.to(clientId).emit(ACTIONS.ADD_PEER,{
-
-            })
+            io.to(clientId).emit(ACTIONS.ADD_PEER,{})
         })
-        socket.emit(ACTIONS.ADD_PEER)
-        console.log(clients)
+        socket.emit(ACTIONS.ADD_PEER,{})
+        socket.join(roomId);
         
     })
     //new Map
