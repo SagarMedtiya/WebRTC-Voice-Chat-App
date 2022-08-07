@@ -31,8 +31,17 @@ app.get('/',(req,res)=>{
     res.send('hello from express');
 })
 //socket
+const socketUserMapping ={
+
+}
+
 io.on('connection',(socket) =>{
     console.log('new Connection', socket.id);
-    socket.on(ACTIONS)
+    socket.on(ACTIONS.JOIN,({roomId, user})=>{
+        socketUserMapping[socket.id] = user
+    })
+    //new Map
+    const clients = io.sockets.adapter.rooms.get(roomId) || [];
+    
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
