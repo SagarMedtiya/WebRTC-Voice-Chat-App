@@ -41,7 +41,7 @@ export const useWebRTC=(roomId, user)=>{
                     localElement.srcObject = localMediaStream.current;
                 }
                 //socket emit JSON socket io
-                socket.current.emit(ACTIONS,{});
+                socket.current.emit(ACTIONS,{roomId, user});
                 
             })
         })
