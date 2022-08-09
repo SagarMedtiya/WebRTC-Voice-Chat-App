@@ -18,7 +18,7 @@ export const useWebRTC=(roomId, user)=>{
     const provideRef=(instance, userId)=>{
         audioElements.current[userId] = instance; 
     }
-    const addNewClients = useCallback(
+    const addNewClient = useCallback(
         (newClients, cb)=>{
             const lookingFor = clients.find((client)=>client.id === newClients.id)
             if(lookingFor=== undefined){
@@ -35,7 +35,7 @@ export const useWebRTC=(roomId, user)=>{
                 })
         }
         startCapture().then(()=>{
-            addNewClients(user,()=>{
+            addNewClient(user,()=>{
                 const localElement = audioElements.current[user.id];
                 if(localElement){
                     localElement.volume = 0;
@@ -55,10 +55,44 @@ export const useWebRTC=(roomId, user)=>{
             }
 
             connections.current[peerId] = new RTCPeerConnection({
-                iceServers:
+                iceServers: freeice()
             })
-        }
 
+            // Handle new ice candidate
+            connections.current[peerId].onicecandidate = (event)=>{
+                socket.current.emit(ACTIONS.RELAY_ICE,{
+                    peerId,
+                    icecandidate: event.candidate
+                })
+            }
+            //handle on track on this connections
+            connections.current[peerId].ontrack=({
+                streams:[remoteStream]
+            })=>{
+                addNewClient(remoteUser,()=>{
+                    if(audioElements.current[remoteUser.id]){
+                        audioElements.current[remoteUser.id].srcObject = remoteStream
+                    }
+                    else{
+                        let settled = false
+                        const interval = setInterval(()=>{
+                            if(audioElements.current[remoteUser.id]){
+                                audioElements.current[remoteUser.id].srcObject = remoteStream
+                                settled = true;
+                            }
+                            if(settled){
+                                clearInterval(interval)
+                            }
+                        },1000)
+                    }
+                })
+            }
+            //ADD local tracks to remote connections
+            localMediaStream.current.getTracks().forEach(track=>{
+                connections.current[peerId].addTrack(track, localMediaStream.current);
+            });
+        };
+        
         socket.connect.on(ACTIONS.ADD_PEER, handleNewPeer)
     },[])
 
