@@ -58,7 +58,10 @@ io.on('connection',(socket) =>{
         socket.join(roomId);
         
     })
-    //new Map
+    //handle relay ice
+    socket.on(ACTIONS.RELAY_ICE,({peerId, icecandidate})=>{
+        io.to(peerId)
+    })
     
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
