@@ -107,6 +107,11 @@ export const useWebRTC=(roomId, user)=>{
         return()=>{
             socket.current.off(ACTIONS.ADD_PEER)
         }
+    },[]);
+    //Handle SDP
+    useEffect(()=>{
+        const handleRemoteSdp = async ()
+        socket.current.on(ACTIONS.RELAY_SDP, handleRemoteSdp)
     },[])
 
     return {clients, provideRef}
