@@ -62,9 +62,16 @@ io.on('connection',(socket) =>{
     socket.on(ACTIONS.RELAY_ICE,({peerId, icecandidate})=>{
         io.to(peerId).emit(ACTIONS.RELAY_ICE,{
             peerId: socket.id,
-            
+            icecandidate,
+        });
+    })
+    //handle relay sdp(session description )
+    socket.on(ACTIONS.RELAY_SDP,({peerId, sessionDescription})=>{
+        io.on(peerId).emit(ACTIONS.RELAY_SDP,{
+            peerId: socket.id,
+            sessionDescription,
         })
     })
-    
+
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
