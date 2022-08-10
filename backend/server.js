@@ -60,7 +60,10 @@ io.on('connection',(socket) =>{
     })
     //handle relay ice
     socket.on(ACTIONS.RELAY_ICE,({peerId, icecandidate})=>{
-        io.to(peerId)
+        io.to(peerId).emit(ACTIONS.RELAY_ICE,{
+            peerId: socket.id,
+            
+        })
     })
     
 }) 
