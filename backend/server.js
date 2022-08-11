@@ -7,7 +7,8 @@ const cors = require('cors')
 const Dbconnect = require('./database')
 const cookieParser = require('cookie-parser')
 const morgan = require("morgan");
-const ACTIONS = require('./action')
+const ACTIONS = require('./action');
+const { RoomRecordingContext } = require('twilio/lib/rest/video/v1/room/recording');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server,{
     cors: {
@@ -72,6 +73,25 @@ io.on('connection',(socket) =>{
             sessionDescription,
         })
     })
+    //leaving the room
+    const leaveRoom =({roomId})=>{
+        const {rooms} = socket;
+        Array.from(rooms).forEach(roomId=>{
+            const clients = Array.from(io.sockets.adapter.rooms.get(roomId)|| [])
+        });
+        clients.forEach(clientId=>{
+            io.to(clientId).emit(ACTIONS.REMOVE_PEER,{
+                peerId: socket.id,
+                userId: socketUserMapping[socket.id].id
 
+            })
+            socket.emit(ACTIONS.REMOVE_PEER,{
+                peerId:clientId,
+                userId: socketMapping[clientId].id
+            })
+        })
+        
+    }
+    socket.on(ACTIONS.LEAVE,leaveRoom);
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
