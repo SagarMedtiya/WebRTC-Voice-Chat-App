@@ -15,9 +15,7 @@ export const useWebRTC=(roomId, user)=>{
         socket.current = socketInit()
     },[])
 
-    const provideRef=(instance, userId)=>{
-        audioElements.current[userId] = instance; 
-    }
+
     const addNewClient = useCallback(
         (newClients, cb)=>{
             const lookingFor = clients.find((client)=>client.id === newClients.id)
@@ -46,6 +44,9 @@ export const useWebRTC=(roomId, user)=>{
                 
             })
         })
+        return ()=>{
+            
+        }
     }, []);
     useEffect(()=>{
         const handleNewPeer = async({peerId, createOffer, user:remoteUser})=>{
@@ -99,7 +100,7 @@ export const useWebRTC=(roomId, user)=>{
                 socket.current.emit(ACTIONS.RELAY_SDP,{
                     peerId,
                     sessionDescription: offer
-                })
+                 })
             }
         };
         
@@ -108,6 +109,18 @@ export const useWebRTC=(roomId, user)=>{
             socket.current.off(ACTIONS.ADD_PEER)
         }
     },[]);
+
+    //handle ice candidate
+    useEffect(()=>{
+        socket.current.on(ACTIONS.ICE_CANDIDATE,({peerId, icecandidate})=>{
+            if(icecandidate){
+                connections.current[peerId].addIceCandidate(icecandidate);
+            }
+        })
+        return ()=>{
+            socket.current.off(ACTIONS.ICE_CANDIDATE)
+        }
+    })
     //Handle SDP
     useEffect(()=>{
         const handleRemoteSdp = async ({peerId, sessionDescription: remoteSessionDescription})=>{
@@ -120,20 +133,40 @@ export const useWebRTC=(roomId, user)=>{
                 const answer = await connection.createAnswer();
 
                 connection.setLocalDescription(answer);
-
-
                 socket.current.emit(ACTIONS.RELAY_SDP,{
                     peerId,
                     sessionDescription: answer,
-                    
+
                 })
             }
         }
-        socket.current.on(ACTIONS.RELAY_SDP, handleRemoteSdp)
+        socket.current.on(ACTIONS.SESSION_DESCRIPTION, handleRemoteSdp)
         return ()=>{
-            socket.current.off(ACTIONS.RELAY_SDP);
+            socket.current.off(ACTIONS.SESSION_DESCRIPTION);
         }
     },[])
 
+    //handle remove peer 
+    useEffect(()=>{
+        const handleRemovePeer =async({peerId, userId})=>{
+           if(connections.current[peerId]){
+                connections.current[peerId].close();
+
+           } 
+           delete connections.current[peerId];
+           delete audioElements.current[peerId];
+           setClients(list=>list.filter(client=>client.id !== userId))
+        }
+        socket.current.on(ACTIONS.REMOVE_PEER, handleRemovePeer);
+        return ()=>{
+            socket.current.off(ACTIONS.REMOVE_PEER);
+        }
+    },[])
+
+    const provideRef=(instance, userId)=>{
+        audioElements.current[userId] = instance; 
+    }
     return {clients, provideRef}
 }
+
+
