@@ -156,7 +156,6 @@ export const useWebRTC=(roomId, user)=>{
         const handleRemovePeer =async({peerId, userId})=>{
            if(connections.current[peerId]){
                 connections.current[peerId].close();
-
            } 
            delete connections.current[peerId];
            delete audioElements.current[peerId];
