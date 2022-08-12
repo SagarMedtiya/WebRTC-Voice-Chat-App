@@ -33,14 +33,14 @@ export const useWebRTC=(roomId, user)=>{
                 })
         }
         startCapture().then(()=>{
-            addNewClient(user,()=>{
+            addNewClient({...user},()=>{
                 const localElement = audioElements.current[user.id];
                 if(localElement){
                     localElement.volume = 0;
                     localElement.srcObject = localMediaStream.current;
                 }
                 //socket emit JSON socket io
-                socket.current.emit(ACTIONS,{roomId, user});
+                socket.current.emit(ACTIONS.JOIN,{roomId, user});
                 
             })
         })
@@ -73,7 +73,7 @@ export const useWebRTC=(roomId, user)=>{
             connections.current[peerId].ontrack=({
                 streams:[remoteStream]
             })=>{
-                addNewClient(remoteUser,()=>{
+                addNewClient(...remoteUser,()=>{
                     if(audioElements.current[remoteUser.id]){
                         audioElements.current[remoteUser.id].srcObject = remoteStream
                     }
@@ -97,7 +97,10 @@ export const useWebRTC=(roomId, user)=>{
             });
             // Create offer
             if(createOffer){
-                const offer = await connections.current[peerId].createOffer()
+                const offer = await connections.current[peerId].createOffer();
+
+                 // Set as local description
+                 await connections.current[peerId].setLocalDescription(offer);
 
                 //send offer to another client
                 socket.current.emit(ACTIONS.RELAY_SDP,{
@@ -107,7 +110,7 @@ export const useWebRTC=(roomId, user)=>{
             }
         };
         
-        socket.connect.on(ACTIONS.ADD_PEER, handleNewPeer);
+        socket.current.on(ACTIONS.ADD_PEER, handleNewPeer);
         return()=>{
             socket.current.off(ACTIONS.ADD_PEER)
         }
@@ -139,7 +142,6 @@ export const useWebRTC=(roomId, user)=>{
                 socket.current.emit(ACTIONS.RELAY_SDP,{
                     peerId,
                     sessionDescription: answer,
-
                 })
             }
         }
