@@ -38,13 +38,12 @@ const socketUserMapping ={
 
 io.on('connection',(socket) =>{
     console.log('new Connection', socket.id);
-    
     socket.on(ACTIONS.JOIN,({roomId, user})=>{
         
         socketUserMapping[socket.id] = user;
         //new Map
         const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
-        clients.forEach(clientId=>{
+        clients.forEach((clientId)=>{
             io.to(clientId).emit(ACTIONS.ADD_PEER,{
                 peerId: socket.id,
                 createOffer: false,
@@ -67,7 +66,7 @@ io.on('connection',(socket) =>{
     })
     //handle relay sdp(session description )
     socket.on(ACTIONS.RELAY_SDP,({peerId, sessionDescription})=>{
-        io.on(peerId).emit(ACTIONS.SESSION_DESCRIPTION,{
+        io.to(peerId).emit(ACTIONS.SESSION_DESCRIPTION,{
             peerId: socket.id,
             sessionDescription,
         })
