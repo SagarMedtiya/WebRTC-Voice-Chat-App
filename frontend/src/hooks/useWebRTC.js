@@ -46,8 +46,7 @@ export const useWebRTC=(roomId, user)=>{
         })
         return ()=>{
             //leaving the room
-            localMediaStream.current.getTracks()
-                .forEach(track=>track.stop());
+            localMediaStream.current.getTracks().forEach((track)=>track.stop());
             socket.current.emit(ACTIONS.LEAVE,{roomId})
         }
     }, []);
@@ -77,7 +76,7 @@ export const useWebRTC=(roomId, user)=>{
                     if(audioElements.current[remoteUser.id]){
                         audioElements.current[remoteUser.id].srcObject = remoteStream
                     }
-                    else{
+                    else{ 
                         let settled = false
                         const interval = setInterval(()=>{
                             if(audioElements.current[remoteUser.id]){
@@ -165,12 +164,12 @@ export const useWebRTC=(roomId, user)=>{
         return ()=>{
             socket.current.off(ACTIONS.REMOVE_PEER);
         }
-    },[])
+    },[]);
 
     const provideRef=(instance, userId)=>{
         audioElements.current[userId] = instance; 
     }
-    return {clients, provideRef}
-}
+    return {clients, provideRef};
+};
 
 
