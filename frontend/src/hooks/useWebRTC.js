@@ -29,8 +29,9 @@ export const useWebRTC=(roomId, user)=>{
         const startCapture=async ()=>{
             localMediaStream.current = 
                 await navigator.mediaDevices.getUserMedia({
-                    audio:true
+                    audio:true,
                 })
+                
         }
         startCapture().then(()=>{
             addNewClient({...user},()=>{
@@ -46,7 +47,9 @@ export const useWebRTC=(roomId, user)=>{
         })
         return ()=>{
             //leaving the room
+            
             localMediaStream.current.getTracks().forEach((track)=>track.stop());
+            console.log('hello')
             socket.current.emit(ACTIONS.LEAVE,{roomId})
         }
     }, []);
@@ -82,14 +85,14 @@ export const useWebRTC=(roomId, user)=>{
                             if(audioElements.current[remoteUser.id]){
                                 audioElements.current[remoteUser.id].srcObject = remoteStream
                                 settled = true;
-                            }
+                            };
                             if(settled){
                                 clearInterval(interval)
-                            }
-                        },1000)
-                    }
-                })
-            }
+                            };
+                        },1000);
+                    };
+                });
+            };
             //ADD local tracks to remote connections
             localMediaStream.current.getTracks().forEach(track=>{
                 connections.current[peerId].addTrack(track, localMediaStream.current);
@@ -97,16 +100,13 @@ export const useWebRTC=(roomId, user)=>{
             // Create offer
             if(createOffer){
                 const offer = await connections.current[peerId].createOffer();
-
-                 // Set as local description
-                 await connections.current[peerId].setLocalDescription(offer);
-
+                 
                 //send offer to another client
                 socket.current.emit(ACTIONS.RELAY_SDP,{
                     peerId,
                     sessionDescription: offer
-                 })
-            }
+                 });
+            };
         };
         
         socket.current.on(ACTIONS.ADD_PEER, handleNewPeer);
