@@ -30,6 +30,7 @@ export const useWebRTC=(roomId, user)=>{
             localMediaStream.current = 
                 await navigator.mediaDevices.getUserMedia({
                     audio:true,
+                    
                 })
                 
         }
@@ -48,7 +49,7 @@ export const useWebRTC=(roomId, user)=>{
         return ()=>{
             //leaving the room
             
-            localMediaStream.current.getTracks().forEach((track)=>track.stop());
+            //localMediaStream.current.getTracks().forEach((track)=>track.stop());
             console.log('hello')
             socket.current.emit(ACTIONS.LEAVE,{roomId})
         }
@@ -75,7 +76,7 @@ export const useWebRTC=(roomId, user)=>{
             connections.current[peerId].ontrack=({
                 streams:[remoteStream]
             })=>{
-                addNewClient(...remoteUser,()=>{
+                addNewClient(remoteUser,()=>{
                     if(audioElements.current[remoteUser.id]){
                         audioElements.current[remoteUser.id].srcObject = remoteStream
                     }
@@ -100,7 +101,7 @@ export const useWebRTC=(roomId, user)=>{
             // Create offer
             if(createOffer){
                 const offer = await connections.current[peerId].createOffer();
-                 
+                await connections.current[peerId].setLocalDescription(offer);
                 //send offer to another client
                 socket.current.emit(ACTIONS.RELAY_SDP,{
                     peerId,
@@ -124,7 +125,6 @@ export const useWebRTC=(roomId, user)=>{
         })
         return ()=>{
             socket.current.off(ACTIONS.ICE_CANDIDATE)
-            
         }
     })
     //Handle SDP
@@ -152,7 +152,7 @@ export const useWebRTC=(roomId, user)=>{
     },[])
 
     //handle remove peer 
-    useEffect(()=>{
+    useEffect(()=>{  
         const handleRemovePeer =async({peerId, userId})=>{
            if(connections.current[peerId]){
                 connections.current[peerId].close();
