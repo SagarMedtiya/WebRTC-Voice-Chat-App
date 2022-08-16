@@ -32,9 +32,7 @@ app.get('/',(req,res)=>{
     res.send('hello from express');
 })
 //socket
-const socketUserMapping ={
-
-}
+const socketUserMapping ={}
 
 io.on('connection',(socket) =>{
     console.log('new Connection', socket.id);
@@ -48,7 +46,7 @@ io.on('connection',(socket) =>{
                 peerId: socket.id,
                 createOffer: false,
                 user
-            })
+            });
             socket.emit(ACTIONS.ADD_PEER,{
                 peerId: clientId,
                 createOffer:true,
@@ -72,18 +70,18 @@ io.on('connection',(socket) =>{
         })
     })
     //leaving the room
-    const leaveRoom =({roomId})=>{
+    const leaveRoom =()=>{
         const {rooms} = socket;
-        Array.from(rooms).forEach(roomId=>{
+        Array.from(rooms).forEach((roomId)=>{
             const clients = Array.from(io.sockets.adapter.rooms.get(roomId)|| [])
-            clients.forEach(clientId=>{
+            clients.forEach((clientId)=>{
                 io.to(clientId).emit(ACTIONS.REMOVE_PEER,{
                     peerId: socket.id,
-                    userId: socketUserMapping[socket.id].id
+                    userId: socketUserMapping[socket.id]?.id
                 })
                 socket.emit(ACTIONS.REMOVE_PEER,{
                     peerId:clientId,
-                    userId: socketMapping[clientId].id
+                    userId: socketUserMapping[clientId]?.id
                 });
             });
             socket.leave(roomId);
@@ -91,5 +89,6 @@ io.on('connection',(socket) =>{
         delete socketUserMapping[socket.id];
     }
     socket.on(ACTIONS.LEAVE,leaveRoom);
+    socket.on('disconnecting',leaveRoom);
 }) 
 server.listen(PORT,()=>console.log(`Listening on port ${PORT}`));
