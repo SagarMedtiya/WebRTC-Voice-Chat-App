@@ -1,19 +1,26 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { useWebRTC } from '../../hooks/useWebRTC'
 import {useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import styles from './Room.module.css';
+import {getRoom} from '../../http/index'
 
 const Room = () => {
     const {id: roomId} =  useParams();
     const history = useNavigate()
-    console.log(roomId);
+    const [room, setRoom ] = useState(null);
     const user = useSelector(state => state.auth.user)
     const {clients, provideRef} = useWebRTC(roomId,user);
     const handleManualLeave=()=>{
         history('/rooms');
     }
-
+    useEffect(() => {
+        const fetchRoom = async ()=>{
+            const { data } =await getRoom(roomId);
+            setRoom(prev=> data);
+        }
+        fetchRoom();
+    }, [roomId]);
   return (
     <div>
         <div className='container'>
@@ -26,7 +33,7 @@ const Room = () => {
             <div className={styles.header}>
                 <h2 className={styles.topic}>Node JS</h2>
                 <div className={styles.actions}>
-                    <button>
+                    <button onClick={handleManualLeave}className={styles.actionButton}>
                         <img src="/images/Exit.png" alt="" />
                         <span>Leave Quietly</span>
                     </button>
@@ -36,14 +43,19 @@ const Room = () => {
                 {
                     clients.map((client,index)=>{
                         return (
-                        <div className={styles.userHead}key={index}>
-                            <audio ref={(instance)=>provideRef(instance,client.id)} controls autoPlay></audio>
+                        <div className={styles.client}>
+                            <div className={styles.userHead}key={index}>
+                            <audio ref={(instance)=>provideRef(instance,client.id)} ></audio>
                             <img className={styles.userAvatar} src={client.avatar} alt="" />
-                            {
-                                client.name
-                            }
-                        </div>)
-                    })
+                            <button className={styles.micBtn}>
+                            {/*<img src="/images/mic.png" alt="" />*/}
+                            <img src="/images/unmute.png" alt="" />
+                            </button>
+                        </div>
+                        
+                        <h4>{client.name}</h4>
+                        </div>
+                    )})
                 }
             </div>
         </div>
