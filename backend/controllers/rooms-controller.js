@@ -26,3 +26,4 @@ class RoomsController{
 
 
 module.exports= new RoomsController()
+
