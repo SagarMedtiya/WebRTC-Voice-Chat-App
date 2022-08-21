@@ -10,14 +10,19 @@ const Room = () => {
     const history = useNavigate()
     const [room, setRoom ] = useState(null);
     const user = useSelector(state => state.auth.user)
-    const {clients, provideRef} = useWebRTC(roomId,user);
+    const {clients, provideRef,handleMute} = useWebRTC(roomId,user);
+    const [isMute, mute]= useState(true)
     const handleManualLeave=()=>{
         history('/rooms');
     }
+    useEffect(()=>{
+        handleMute (isMute,user.id)
+    },[isMute])
     useEffect(() => {
         const fetchRoom = async ()=>{
             const { data } =await getRoom(roomId);
-            setRoom(prev=> data);
+            console.log(data)
+            setRoom((prev)=> data);
         }
         fetchRoom();
     }, [roomId]);
@@ -31,7 +36,7 @@ const Room = () => {
         </div>
         <div className={styles.clientsWrap}>
             <div className={styles.header}>
-                <h2 className={styles.topic}>Node JS</h2>
+                <h2 className={styles.topic}>{room?.topic}</h2>
                 <div className={styles.actions}>
                     <button onClick={handleManualLeave}className={styles.actionButton}>
                         <img src="/images/Exit.png" alt="" />
@@ -43,13 +48,20 @@ const Room = () => {
                 {
                     clients.map((client,index)=>{
                         return (
-                        <div className={styles.client}>
-                            <div className={styles.userHead}key={index}>
+                        <div className={styles.client} key={index}>
+                            <div className={styles.userHead}>
                             <audio ref={(instance)=>provideRef(instance,client.id)} ></audio>
                             <img className={styles.userAvatar} src={client.avatar} alt="" />
                             <button className={styles.micBtn}>
-                            {/*<img src="/images/mic.png" alt="" />*/}
-                            <img src="/images/unmute.png" alt="" />
+                                {
+                                    client.muted ? 
+                                    <img src="/images/mute.png" alt="" />
+                                    :
+                                    <img src="/images/unmute.png" alt="" />
+                                }
+                            
+                                
+                                
                             </button>
                         </div>
                         
