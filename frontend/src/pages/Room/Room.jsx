@@ -16,8 +16,8 @@ const Room = () => {
         history('/rooms');
     }
     useEffect(()=>{
-        handleMute (isMute,user.id)
-    },[isMute])
+        handleMute (isMute,user.id);
+    },[isMute]);
     useEffect(() => {
         const fetchRoom = async ()=>{
             const { data } =await getRoom(roomId);
@@ -59,9 +59,6 @@ const Room = () => {
                                     :
                                     <img src="/images/unmute.png" alt="" />
                                 }
-                            
-                                
-                                
                             </button>
                         </div>
                         
