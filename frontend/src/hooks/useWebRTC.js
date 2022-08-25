@@ -172,6 +172,20 @@ export const useWebRTC=(roomId, user)=>{
     }
     const handleMute=(isMute,userId)=>{
         console.log('mute', isMute);
+        let settled = false;
+        let interval = setInterval(()=>{
+            if(localMediaStream.current){
+                localMediaStream.current.getTracks()[0].enabled = !isMute;
+                if(isMute){
+                    socket.current.emit(ACTIONS.MUTE, {
+                        roomId,
+                        userId, 
+                    })
+                } 
+            }
+        },200)
+        
+        
     }
     return {clients, provideRef, handleMute};
 };
