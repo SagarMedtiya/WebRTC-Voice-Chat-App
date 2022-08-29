@@ -27,6 +27,9 @@ const Room = () => {
         fetchRoom();
     }, [roomId]);
     const handleMuteClick=(clientId)=>{
+        if(clientId !==user.id){
+            return;
+        }
         setMute((isMute)=>!isMute)
     }
   return (
