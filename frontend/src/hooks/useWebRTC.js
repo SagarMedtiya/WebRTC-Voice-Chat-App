@@ -11,6 +11,7 @@ export const useWebRTC=(roomId, user)=>{
     const connections = useRef({});
     const localMediaStream = useRef(null);
     const socket =useRef(null);
+    const clientsRef = useRef([])
     useEffect(()=>{
         socket.current = socketInit()
     },[])
@@ -167,11 +168,37 @@ export const useWebRTC=(roomId, user)=>{
         }
     },[]);
 
+
+    //
+    useEffect(()=>{
+        clientsRef.current = clients;
+    },[clients]);
+    //listen for mute/unmute
+    useEffect(()=>{
+        socket.current.on(ACTIONS.MUTE,({peerId, userId})=>{
+            setMute(true,userId);
+        })
+        socket.current.on(ACTIONS.UN_MUTE,({peerId, userId})=>{
+            setMute(false,userId);
+        })
+
+        const setMute=(mute, userId)=>{
+            const clientIdx = clientsRef.current.map(client=>client.id).indexOf(userId);
+            console.log('idx',clientIdx)
+            const connectedClients = clientsRef.current;
+            if(clientIdx >-1){
+                connectedClients[clientIdx].muted = mute;
+                setClients(connectedClients);
+            }
+        }
+    },[clients])
     const provideRef=(instance, userId)=>{
         audioElements.current[userId] = instance; 
     }
+
+    //Handle mute and unmute
     const handleMute=(isMute,userId)=>{
-        console.log('mute', isMute);
+        console.log('click',isMute)
         let settled = false;
         let interval = setInterval(()=>{
             if(localMediaStream.current){
@@ -181,13 +208,22 @@ export const useWebRTC=(roomId, user)=>{
                         roomId,
                         userId, 
                     })
+                }
+                else{
+                    socket.current.emit(ACTIONS.UN_MUTE,{
+                        roomId,
+                        userId
+                    })
                 } 
+                settled = true;
+            }
+            if(settled){
+                clearInterval(interval);
             }
         },200)
-        
-        
     }
     return {clients, provideRef, handleMute};
 };
+
 
 
