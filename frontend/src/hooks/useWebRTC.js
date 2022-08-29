@@ -50,7 +50,7 @@ export const useWebRTC=(roomId, user)=>{
         return ()=>{
             //leaving the room
             
-            //localMediaStream.current.getTracks().forEach((track)=>track.stop());
+            localMediaStream.current.getTracks().forEach((track)=>track.stop());
             console.log('hello')
             socket.current.emit(ACTIONS.LEAVE,{roomId})
         }
@@ -183,9 +183,12 @@ export const useWebRTC=(roomId, user)=>{
         })
 
         const setMute=(mute, userId)=>{
+            console.log('mute/unmute',mute)
             const clientIdx = clientsRef.current.map(client=>client.id).indexOf(userId);
             console.log('idx',clientIdx)
-            const connectedClients = clientsRef.current;
+            const connectedClients = JSON.parse(
+                JSON.stringify(clientsRef.current)
+            )
             if(clientIdx >-1){
                 connectedClients[clientIdx].muted = mute;
                 setClients(connectedClients);
@@ -198,7 +201,7 @@ export const useWebRTC=(roomId, user)=>{
 
     //Handle mute and unmute
     const handleMute=(isMute,userId)=>{
-        console.log('click',isMute)
+        console.log('handleMute',isMute)
         let settled = false;
         let interval = setInterval(()=>{
             if(localMediaStream.current){
