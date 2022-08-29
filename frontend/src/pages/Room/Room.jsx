@@ -11,7 +11,7 @@ const Room = () => {
     const [room, setRoom ] = useState(null);
     const user = useSelector(state => state.auth.user)
     const {clients, provideRef,handleMute} = useWebRTC(roomId,user);
-    const [isMute, mute]= useState(true)
+    const [isMute, setMute]= useState(true)
     const handleManualLeave=()=>{
         history('/rooms');
     }
@@ -26,6 +26,9 @@ const Room = () => {
         }
         fetchRoom();
     }, [roomId]);
+    const handleMuteClick=(clientId)=>{
+        setMute((isMute)=>!isMute)
+    }
   return (
     <div>
         <div className='container'>
@@ -52,7 +55,7 @@ const Room = () => {
                             <div className={styles.userHead}>
                             <audio ref={(instance)=>provideRef(instance,client.id)} ></audio>
                             <img className={styles.userAvatar} src={client.avatar} alt="" />
-                            <button className={styles.micBtn}>
+                            <button onClick={()=>handleMuteClick(client.id)}className={styles.micBtn}>
                                 {
                                     client.muted ? 
                                     <img src="/images/mute.png" alt="" />
