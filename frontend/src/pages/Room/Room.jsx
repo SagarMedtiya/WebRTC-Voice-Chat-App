@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, Suspense} from 'react'
 import { useWebRTC } from '../../hooks/useWebRTC'
 import {useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
