@@ -11,5 +11,4 @@ const ACTIONS ={
     UN_MUTE: 'un-mute'
 }
 
-module.exports = ACTIONS;
-
+module.exports = ACTIONS
