@@ -14,3 +14,7 @@
 
 -----------------------------------------------------------------------------------
 Figma Link: https://www.figma.com/file/Euy0P7Xbt7LXbEWrc4RXjT/Realtime-WebRTC-voice-chat-(Community)
+
+-----------------------------------------------------------------------------------
+### First Page
+<img src="./images/StartingPage.png" alt="one" />
