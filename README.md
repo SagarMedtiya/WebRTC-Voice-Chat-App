@@ -28,3 +28,6 @@ Figma Link: https://www.figma.com/file/Euy0P7Xbt7LXbEWrc4RXjT/Realtime-WebRTC-vo
 
 ### Create-a-Room Page
 <img src="./images/RoomMaking.png" alt="one" />
+
+### Joining-a-Room-and-talking Page
+<img src="./images/FinalOutput.png" alt="one" />
