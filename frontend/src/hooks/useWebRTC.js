@@ -50,7 +50,7 @@ export const useWebRTC=(roomId, user)=>{
         return ()=>{
             //leaving the room
             
-            localMediaStream.current.getTracks().forEach((track)=>track.stop());
+            //localMediaStream.current.getTracks().forEach((track)=>track.stop());
             console.log('hello')
             socket.current.emit(ACTIONS.LEAVE,{roomId})
         }
@@ -77,7 +77,7 @@ export const useWebRTC=(roomId, user)=>{
             connections.current[peerId].ontrack=({
                 streams:[remoteStream]
             })=>{
-                addNewClient(...{remoteUser},()=>{
+                addNewClient({...remoteUser},()=>{
                     if(audioElements.current[remoteUser.id]){
                         audioElements.current[remoteUser.id].srcObject = remoteStream
                     }
