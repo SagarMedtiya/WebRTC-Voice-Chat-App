@@ -20,6 +20,7 @@ Figma Link: https://www.figma.com/file/Euy0P7Xbt7LXbEWrc4RXjT/Realtime-WebRTC-vo
 <img src="./images/StartingPage.png" alt="one" />
 
 ### Login Page
-<img src="./images/LoginPage.png" alt="one" /
+<img src="./images/LoginPage.png" alt="one" />
 
-### 
+### Room Page
+<img src="./images/Output.png" alt="one" />
